@@ -1,0 +1,54 @@
+{% extends 'freelance_hub/base.html' %}
+{% block title %}Dashboard - Freelance Hub{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Proyectos Freelance</h2>
+    <a href="{% url 'freelance_hub:crear_proyecto' %}" class="btn btn-primary">+ Nuevo Proyecto</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm bg-white">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Proyecto</th>
+                <th>Cliente</th>
+                <th>Fecha de Inicio</th>
+                <th>Fecha de Límite</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proyecto in proyectos %}
+            <tr>
+                <td>{{ proyecto.id }}</td>
+                <td><strong>{{ proyecto.nombre }}</strong></td>
+                <td>{{ proyecto.cliente }}</td>
+                <td>{{ proyecto.fecha_inicio|date:"d/m/Y" }}</td>
+                <td>{{ proyecto.fecha_limite|date:"d/m/Y" }}</td>
+                <td>
+                    {% if proyecto.prioridad == 'Alta' %}<span class="badge bg-danger">Alta</span>
+                    {% elif proyecto.prioridad == 'Media' %}<span class="badge bg-warning text-dark">Media</span>
+                    {% else %}<span class="badge bg-success">Baja</span>{% endif %}
+                </td>
+                <td>
+                    {% if proyecto.estado == 'Completado' %}<span class="badge bg-success">Completado</span>
+                    {% elif proyecto.estado == 'En Progreso' %}<span class="badge bg-primary">En Progreso</span>
+                    {% else %}<span class="badge bg-secondary">Pendiente</span>{% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'freelance_hub:editar_proyecto' proyecto.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="{% url 'freelance_hub:eliminar_proyecto' proyecto.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center text-muted py-4">No hay proyectos registrados aún.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

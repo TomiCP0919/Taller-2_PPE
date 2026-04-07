@@ -1,0 +1,24 @@
+{% extends 'freelance_hub/base.html' %}
+{% block title %}Eliminar Proyecto{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 mt-5">
+        <div class="card border-danger shadow">
+            <div class="card-header bg-danger text-white text-center">
+                 <h4 class="mb-0">⚠️ Confirmar Eliminación</h4>
+            </div>
+            <div class="card-body text-center py-4">
+                <p class="fs-5">¿Estás seguro que deseas eliminar el proyecto?</p>
+                <p class="fw-bold fs-4 text-dark">{{ proyecto.nombre }}</p>
+                <p class="text-muted small">Esta acción no se puede deshacer.</p>
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <a href="{% url 'freelance_hub:lista_proyectos' %}" class="btn btn-secondary me-2">Cancelar</a>
+                    <button type="submit" class="btn btn-danger">Sí, eliminar permanentemente</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

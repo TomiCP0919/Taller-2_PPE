@@ -1,0 +1,61 @@
+{% extends 'freelance_hub/base.html' %}
+{% block title %}{% if es_edicion %}Editar Proyecto{% else %}Nuevo Proyecto{% endif %}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">{% if es_edicion %}Editar Proyecto: {{ proyecto.nombre }}{% else %}Registrar Nuevo Proyecto{% endif %}</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-md-6 form-group">
+                            <label class="form-label fw-bold">Nombre del Proyecto</label>
+                            {{ form.nombre }}
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label fw-bold">Cliente</label>
+                            {{ form.cliente }}
+                        </div>
+                    </div>
+                    <div class="mb-3 form-group">
+                        <label class="form-label fw-bold">Descripción</label>
+                        {{ form.descripcion }}
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 form-group">
+                            <label class="form-label fw-bold">Presupuesto ($)</label>
+                            {{ form.presupuesto }}
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="form-label fw-bold">Fecha Inicial</label>
+                            {{ form.fecha_inicio }}
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="form-label fw-bold">Fecha Límite</label>
+                            {{ form.fecha_limite }}
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6 form-group">
+                            <label class="form-label fw-bold">Prioridad</label>
+                            {{ form.prioridad }}
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="form-label fw-bold">Estado</label>
+                            {{ form.estado }}
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'freelance_hub:lista_proyectos' %}" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-success px-4">Guardar Proyecto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
