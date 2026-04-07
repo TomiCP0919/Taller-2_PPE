@@ -145,6 +145,4 @@ Tienen extensión `.html` pero usan DTL (Django Template Language) simbolizado c
   * Variables/Funciones/Vistas: snake_case (`mi_proyecto`, `lista_proyectos`).
 
 ---
-> [!NOTE] 
-> User Review Required:
-> ¿Qué te parece este nivel de detalle para el plan del proyecto "Freelance Hub"? ¿Te sientes cómodo con la lógica conceptual descrita o necesitas que explique en el plan cómo funcionaría la misma arquitectura usando vistas basadas en clases integradas (Class-Based Views genéricas) en lugar del esquema tradicional mencionado aquí?
+
