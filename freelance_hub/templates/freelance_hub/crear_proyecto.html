@@ -3,11 +3,9 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">{% if es_edicion %}Editar Proyecto: {{ proyecto.nombre }}{% else %}Registrar Nuevo Proyecto{% endif %}</h4>
-            </div>
+        <div class="card p-3">
             <div class="card-body">
+                <h3 class="mb-4">{% if es_edicion %}Editar Proyecto: {{ proyecto.nombre }}{% else %}Registrar Nuevo Proyecto{% endif %}</h3>
                 <form method="post">
                     {% csrf_token %}
                     <div class="row mb-3">
@@ -49,13 +47,32 @@
                         </div>
                     </div>
                     
-                    <div class="d-flex justify-content-between">
-                        <a href="{% url 'freelance_hub:lista_proyectos' %}" class="btn btn-outline-secondary">Cancelar</a>
-                        <button type="submit" class="btn btn-success px-4">Guardar Proyecto</button>
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'freelance_hub:lista_proyectos' %}" class="btn btn-secundary text-white" style="background-color: #64748b !important;">Cancelar</a>
+                        <button type="submit" class="btn btn-primary px-4">Guardar Proyecto</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const txtA = document.getElementById("id_descripcion");
+        if(txtA) {
+            txtA.style.resize = "none";
+            txtA.style.overflow = "hidden";
+            // Set initial height
+            txtA.style.height = 'auto';
+            txtA.style.height = txtA.scrollHeight + 'px';
+            
+            // Adjust on input
+            txtA.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = this.scrollHeight + 'px';
+            }, false);
+        }
+    });
+</script>
 {% endblock %}

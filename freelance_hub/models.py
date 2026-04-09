@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date
 
 class Proyecto(models.Model):
     PRIORIDAD_CHOICES = [
@@ -26,3 +27,8 @@ class Proyecto(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    @property
+    def dias_restantes(self):
+        delta = self.fecha_limite - date.today()
+        return delta.days

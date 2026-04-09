@@ -1,0 +1,37 @@
+{% extends 'freelance_hub/base.html' %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container">
+        <h1 class="hero-title">The Freelancer Hub</h1>
+        <p class="hero-subtitle">Maneja tus proyectos, tiempos y presupuestos sin fricción en una interfaz limpia y fluida. Haz crecer tu espacio de trabajo digital.</p>
+        <a href="{% url 'freelance_hub:lista_proyectos' %}" class="btn btn-primary btn-lg">Entrar al Workspace</a>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="feature-card text-center">
+                <div class="feature-icon">🗂️</div>
+                <h4>Todo en un solo lugar</h4>
+                <p class="text-muted">Centraliza tus proyectos, clientes y fechas límite en un único panel intuitivo.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card text-center">
+                <div class="feature-icon">💰</div>
+                <h4>Control de Presupuestos</h4>
+                <p class="text-muted">Monitorea tus ingresos y estima presupuestos con precisión para cada tarea. Lleva las finanzas de tu negocio al siguiente nivel.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card text-center">
+                <div class="feature-icon">🚀</div>
+                <h4>Flujo Optimizado</h4>
+                <p class="text-muted">Prioriza trabajos y cambia los estados de progreso ágilmente. Diseñado para que administres tu tiempo de forma más inteligente.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

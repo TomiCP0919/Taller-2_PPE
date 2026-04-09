@@ -1,4 +1,5 @@
 {% extends 'freelance_hub/base.html' %}
+{% load humanize %}
 {% block title %}Dashboard - Freelance Hub{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -6,46 +7,106 @@
     <a href="{% url 'freelance_hub:crear_proyecto' %}" class="btn btn-primary">+ Nuevo Proyecto</a>
 </div>
 
+<!-- Filtros de Búsqueda -->
+<form method="GET" class="d-flex gap-2 mb-4 p-3 rounded" style="background-color: var(--surf-container-highest);">
+    <input type="text" name="q" class="form-control" placeholder="Buscar por nombre..." value="{{ q }}">
+    <input type="text" name="cliente" class="form-control" placeholder="Cliente..." value="{{ cliente }}">
+    <select name="estado" class="form-select">
+        <option value="">Todos los Estados</option>
+        <option value="Pendiente" {% if estado_filtro == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+        <option value="En Progreso" {% if estado_filtro == 'En Progreso' %}selected{% endif %}>En Progreso</option>
+        <option value="Completado" {% if estado_filtro == 'Completado' %}selected{% endif %}>Completado</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+    <a href="{% url 'freelance_hub:lista_proyectos' %}" class="btn btn-secundary" style="background-color: white !important; color: var(--on-surf) !important;">Limpiar</a>
+</form>
+
 <div class="table-responsive">
-    <table class="table table-hover table-bordered shadow-sm bg-white">
-        <thead class="table-light">
+    <table class="table">
+        <thead>
             <tr>
                 <th>ID</th>
                 <th>Proyecto</th>
                 <th>Cliente</th>
+                <th>Presupuesto</th>
                 <th>Fecha de Inicio</th>
-                <th>Fecha de Límite</th>
+                <th>Fecha Límite</th>
                 <th>Prioridad</th>
                 <th>Estado</th>
-                <th>Acciones</th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody>
             {% for proyecto in proyectos %}
-            <tr>
+            <tr {% if proyecto.dias_restantes <= 5 and proyecto.estado != 'Completado' %}style="background-color: rgba(255, 193, 7, 0.1);"{% endif %}>
                 <td>{{ proyecto.id }}</td>
-                <td><strong>{{ proyecto.nombre }}</strong></td>
+                <td>
+                    <strong>{{ proyecto.nombre }}</strong>
+                    {% if proyecto.dias_restantes <= 5 and proyecto.dias_restantes > 0 and proyecto.estado != 'Completado' %}
+                        <br><span class="badge mt-1" style="background-color: #e0f2fe  ; color: #0284c7; font-size: 11px; padding: 0.4em 0.6em; font-weight: 500; white-space: normal; line-height: 1.4;">⏱️ Vence en {{ proyecto.dias_restantes }} días</span>
+                    {% elif proyecto.dias_restantes <= 0 and proyecto.estado != 'Completado' %}
+                        <br><span class="badge mt-1" style="background-color: var(--primary); color: white; font-size: 11px; padding: 0.4em 0.6em; font-weight: 500; white-space: normal;">⚠️ Vencido</span>
+                    {% endif %}
+                </td>
                 <td>{{ proyecto.cliente }}</td>
+                <td>${{ proyecto.presupuesto|floatformat:"0"|intcomma }} COP</td>
                 <td>{{ proyecto.fecha_inicio|date:"d/m/Y" }}</td>
                 <td>{{ proyecto.fecha_limite|date:"d/m/Y" }}</td>
                 <td>
-                    {% if proyecto.prioridad == 'Alta' %}<span class="badge bg-danger">Alta</span>
-                    {% elif proyecto.prioridad == 'Media' %}<span class="badge bg-warning text-dark">Media</span>
-                    {% else %}<span class="badge bg-success">Baja</span>{% endif %}
+                    {% if proyecto.prioridad == 'Alta' %}<span class="badge" style="background-color: #023e8a; color: white;">Alta</span>
+                    {% elif proyecto.prioridad == 'Media' %}<span class="badge" style="background-color: var(--primary-container); color: white;">Media</span>
+                    {% else %}<span class="badge" style="background-color: var(--surf-container-highest); color: var(--on-surf);">Baja</span>{% endif %}
                 </td>
                 <td>
-                    {% if proyecto.estado == 'Completado' %}<span class="badge bg-success">Completado</span>
-                    {% elif proyecto.estado == 'En Progreso' %}<span class="badge bg-primary">En Progreso</span>
-                    {% else %}<span class="badge bg-secondary">Pendiente</span>{% endif %}
+                    {% if proyecto.estado == 'Completado' %}<span class="badge" style="background-color: var(--primary-container); color: white;">Completado</span>
+                    {% elif proyecto.estado == 'En Progreso' %}<span class="badge" style="background-color: var(--primary); color: white;">En Progreso</span>
+                    {% else %}<span class="badge" style="background-color: var(--surf-container-highest); color: var(--on-surf);">Pendiente</span>{% endif %}
                 </td>
                 <td>
-                    <a href="{% url 'freelance_hub:editar_proyecto' proyecto.pk %}" class="btn btn-sm btn-warning">Editar</a>
-                    <a href="{% url 'freelance_hub:eliminar_proyecto' proyecto.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                    <div class="d-flex justify-content-center gap-2 text-nowrap">
+                        <button type="button" class="btn btn-sm btn-terciary" data-bs-toggle="modal" data-bs-target="#modalProyecto{{ proyecto.id }}">Ver Detalle</button>
+                        <a href="{% url 'freelance_hub:editar_proyecto' proyecto.pk %}" class="btn btn-sm btn-primary">Editar</a>
+                        <a href="{% url 'freelance_hub:eliminar_proyecto' proyecto.pk %}" class="btn btn-sm btn-secundary">Eliminar</a>
+                    </div>
                 </td>
             </tr>
+
+            <!-- Modal Bootstrap -->
+            <div class="modal fade" id="modalProyecto{{ proyecto.id }}" tabindex="-1" aria-labelledby="modalLabel{{ proyecto.id }}" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="border: none; border-radius: 12px; background-color: var(--surf);">
+                  <div class="modal-header" style="border-bottom: 1px solid var(--surf-container-highest);">
+                    <h5 class="modal-title fw-bold" id="modalLabel{{ proyecto.id }}" style="color: var(--on-surf);">{{ proyecto.nombre }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p><strong>Cliente:</strong> {{ proyecto.cliente }}</p>
+                    <p><strong>Presupuesto:</strong> ${{ proyecto.presupuesto|floatformat:"0"|intcomma }} COP</p>
+                    <hr style="border-color: var(--surf-container-highest);">
+                    <p><strong>Descripción:</strong></p>
+                    <p class="text-muted" style="white-space: pre-wrap; font-family: 'Inter', sans-serif;">{{ proyecto.descripcion }}</p> 
+                    {% if proyecto.dias_restantes <= 5 and proyecto.dias_restantes > 0 and proyecto.estado != 'Completado' %}
+                        <div class="alert alert-warning mt-3 border-0" style="border-radius: 8px;">
+                            <strong>¡Próximo a vencer!</strong> Faltan {{ proyecto.dias_restantes }} días. Te sugerimos acelerar las entregas.
+                        </div>
+                    {% elif proyecto.dias_restantes <= 0 and proyecto.estado != 'Completado' %}
+                        <div class="alert alert-danger mt-3 border-0" style="border-radius: 8px;">
+                            <strong>¡Plazo Vencido!</strong> Este proyecto ha excedido su fecha límite. 
+                            <a href="{% url 'freelance_hub:editar_proyecto' proyecto.pk %}" class="alert-link">Haz clic aquí para extender la fecha.</a>
+                        </div>
+                    {% endif %}
+                  </div>
+                  <div class="modal-footer" style="border-top: none;">
+                    <button type="button" class="btn btn-secundary text-white" style="background-color: #64748b !important;" data-bs-dismiss="modal">Cerrar</button>
+                    <a href="{% url 'freelance_hub:editar_proyecto' proyecto.pk %}" class="btn btn-primary">Editar Proyecto</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {% empty %}
             <tr>
-                <td colspan="7" class="text-center text-muted py-4">No hay proyectos registrados aún.</td>
+                <td colspan="9" class="text-center text-muted py-4">No hay proyectos registrados aún.</td>
             </tr>
             {% endfor %}
         </tbody>
