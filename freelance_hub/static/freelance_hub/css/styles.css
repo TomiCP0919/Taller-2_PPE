@@ -1,0 +1,201 @@
+:root {
+  --surf: #f9f9ff;
+  --on-surf: #001c3a;
+  --on-surf-variant: #414753;
+  --surf-container-low: #eff3ff;
+  --surf-container-highest: #d4e3ff;
+
+  --primary: #005bad;
+  --primary-container: #0074d9;
+
+  --oceanic-gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+}
+
+body {
+  background-color: var(--surf);
+  color: var(--on-surf);
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.01em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.navbar-brand {
+  color: black;
+  font-family: 'Manrope', sans-serif;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.navbar-brand:hover {
+  color: black !important;
+  transform: translateY(-2px);
+  filter: brightness(110%);
+}
+
+/* Base structural fixes without raw borders */
+.card {
+  background-color: var(--surf-container-low);
+  border: none !important;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 20px rgba(0, 28, 58, 0.04);
+  transition: background-color 0.3s ease;
+}
+
+.card:hover {
+  background-color: var(--surf-container-highest);
+}
+
+/* Tables and Workspace */
+.table-responsive {
+  background-color: var(--surf-container-low);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.table {
+  margin-bottom: 0;
+  color: var(--on-surf);
+}
+
+.table th {
+  background-color: transparent !important;
+  color: var(--on-surf-variant);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--surf-container-highest) !important;
+  border-top: none !important;
+}
+
+.table td {
+  border-bottom: 1px solid var(--surf-container-highest);
+  vertical-align: middle;
+}
+
+.table tbody tr:hover td {
+  background-color: var(--surf-container-highest) !important;
+}
+
+/* Button Styling (High Gloss Gradient CTAs & soft ones) */
+.btn-primary {
+  background: var(--oceanic-gradient) !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 0.75rem;
+  padding: 0.6rem 1.2rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 91, 173, 0.25);
+  transition: transform 0.2s, filter 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(110%);
+}
+
+.btn-secundary {
+  background: var(--on-surf) !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 0.75rem;
+  padding: 0.6rem 1.2rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(124, 229, 236, 0.25);
+  transition: transform 0.2s, filter 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-secundary:hover {
+  transform: translateY(-2px);
+  filter: brightness(110%);
+}
+
+.btn-terciary {
+  background: #e0f2fe !important;
+  border: none !important;
+  color: #0284c7 !important;
+  border-radius: 0.75rem;
+  padding: 0.6rem 1.2rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(124, 229, 236, 0.25);
+  transition: transform 0.2s, filter 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-terciary:hover {
+  transform: translateY(-2px);
+  filter: brightness(110%);
+}
+
+/* Notion style forms fields */
+.form-control,
+.form-select {
+  background-color: var(--surf-container-low);
+  border: none;
+  border-bottom: 2px solid var(--surf-container-highest);
+  border-radius: 0.4rem 0.4rem 0 0;
+  color: var(--on-surf);
+  padding: 0.7rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #ffffff;
+  border-color: var(--primary-container);
+  box-shadow: none;
+  color: var(--on-surf);
+}
+
+/* Clean Badges */
+.badge {
+  padding: 0.40em 0.60em;
+  font-weight: 500;
+  border-radius: 0.4rem;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Landing Specifics */
+.hero-section {
+  padding: 6rem 0 4rem;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  color: var(--on-surf);
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: var(--on-surf-variant);
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.6;
+}
+
+.feature-card {
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 10px 40px rgba(0, 28, 58, 0.03);
+  height: 100%;
+}
+
+.feature-icon {
+  font-size: 2rem;
+  color: var(--primary-container);
+  margin-bottom: 1rem;
+}
